@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>AukdeShop</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+	<script src="js/getProducts.js"></script>
+	
+	<script src="js/alertify.min.js"></script>
+	<link rel="stylesheet" href="css/alertify.css"/>
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/flaticon.css"/>
+	<link rel="stylesheet" href="css/slicknav.min.css"/>
+	<link rel="stylesheet" href="css/jquery-ui.min.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
+	<link rel="stylesheet" href="css/animate.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh7U0aNiNGd0oLz7CLzdluscfw2ojSnsc&callback=initMap"></script>
+   
+
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body id="generalBody">
+	<div id="generalDiv">
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader" id="xloader"></div>
+	</div>
+
+	<div class="loading" id="loadAddToCart"></div>
+
+
+	<a href="cart.html" class="float">
+		<i class="fa fa-shopping-cart my-float mouse"></i>
+		<h6 style="color: aliceblue;margin-top: -1px;" id="ctxCart2">0</h6>
+		</a>
+
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="header-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 text-center text-lg-left">
+						<!-- logo -->
+						<a href="./index.html" class="site-logo">
+							<img src="img/aukdeshop.png">
+						</a>
+					</div>
+					<div class="col-xl-6 col-lg-5">
+						<form class="header-search-form">
+							<input type="text" placeholder="Buscar ....">
+							<button><i class="flaticon-search"></i></button>
+						</form>
+					</div>
+					<div class="col-xl-4 col-lg-5">
+						<div class="user-panel">
+
+							<div class="up-item" id="credentials">
+								<i class="flaticon-profile"></i>
+								<a href="#">Regístrate</a> ó <a href="#myModal" class="trigger-btn" data-toggle="modal">Inicia Sesión</a>
+							</div>
+
+							<div class="up-item" id="logged" style="display: none;">
+								<i class="flaticon-profile"></i>
+								<a href="profile.html" target="a_blank">Mi perfil</a> | <a onclick="logout()" href="#">Salir</a>
+							</div>
+							&nbsp;
+							<div class="up-item">
+								<div class="shopping-card">
+									<i class="flaticon-bag"></i>
+									<span id="ctxCart1">0</span>
+								</div>
+								<a href="cart.html">Mi carrito</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal HTML -->
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">Iniciar sesión</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<i class="fa fa-user"></i>
+						<input type="email" class="form-control" placeholder="Correo" required="required" id="email">
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i>
+						<input type="password" class="form-control" placeholder="Contraseña" required="required" id="password">					
+					</div>
+					<div class="form-group">
+						<input class="btn btn-primary btn-block btn-lg" value="Acceder" id="btn-login" onclick="login()">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#">Olvidaste tu contraseña?</a>
+			</div>
+		</div>
+	</div>
+</div>     
+<!-- Modal HTML -->
+
+		<nav class="main-navbar" id="main_navbar">
+			<div class="container">
+				<!-- menu -->
+				<ul class="main-menu">
+					<li><a href="index.html">Inicio</a></li>
+					<!-- 
+					<li><a href="#">Categorias</a>
+						<ul class="sub-menu">
+							<li><a href="./product.html">Comidas y bebidas</a></li>
+							<li><a href="./category.html">Electrónicos</a></li>
+							<li><a href="./cart.html">Calzado</a></li>
+							<li><a href="./checkout.html">Otro1</a></li>
+							<li><a href="./contact.html">Otro2</a></li>
+						</ul> -->
+					<li><a href="#">Descarga nuestra app</a>
+						
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<nav id="navClient"></nav>
+	
+		<script src="js/nav.js"></script>
+
+
+	</header>
+	<!-- Header section end -->
+
+
+	<!-- Modal start -->
+
+	<div class="modal fade" id="modalPay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Método de pago</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">	
+	
+			<input type="radio" class="btn-check" name="options-outlined" id="contra-entrega" autocomplete="off">
+            <label><img src="img/contra-entrega.png" width="30px" height="30px">&nbsp;Contra entrega</label>
+			&nbsp;
+            <input type="radio" class="btn-check" name="options-outlined" id="tarjeta" autocomplete="off">
+            <label><img src="img/tarjeta.png" width="30px" height="30px">&nbsp;Tarjeta de crédito</label>
+			<p></p>
+			<form style="display:none;" id="formAmountToPay" >
+				<div class="form-group" style="margin-left: 20px;margin-right: 20px;">
+				  <label for="exampleFormControlInput1">¿Con cuanto va a pagar?</label>
+				  <input type="number" class="form-control" id="amountToPay">
+				</div>
+				</form>
+       
+			<p></p>
+			<label>Selecciona tu dirección : </label>
+			<p></p>
+
+			<div style="display: flex; justify-content: flex-end;margin-right: 10px;margin-bottom: 10px;">
+				<button class="btn btn-primary" data-toggle="modal" data-target="#modalAddress">Agregar nueva dirección</button>
+			  </div>
+
+			<ul class="list-group" id="checkboxAddress">
+			
+			  </ul>
+
+			<br></br>
+			<div style="display: flex; justify-content: flex-end;margin-right: 10px;">
+			<h4>Total a pagar : </h4>&nbsp;<h4 id="totalPay"></h4>
+			</div>
+
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+			  <button type="button" class="btn btn-success" onclick="pay()">Pagar</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+	<!-- End modal   -->
+	
+		<!--MODAL-->
+<div class="modal fade" id="modalAddress" tabindex="-1" role="dialog" aria-labelledby="AddresssLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="AddresssLabel">Agrega una nueva dirección</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+			
+
+			<form>
+				<div class="form-group">
+				  <label for="exampleFormControlInput1">Nombre completo</label>
+				  <input type="text" class="form-control" id="fullname">
+				</div>
+				<div class="form-group">
+					<label for="exampleFormControlInput1">Teléfono</label>
+					<input type="number" class="form-control" id="phone">
+				  </div>
+				  <div class="form-group">
+					<label for="exampleFormControlInput1">Dirección</label>
+					<input type="text" class="form-control" id="addressform">
+				  </div>
+
+				  <div class="form-group">
+				
+						<label><b>Agrege su ubicación</b></label>
+						<div id="googleMap" style="margin-bottom: 15px;width: 100%;height: 300px;"></div>
+				
+						<div style="display: none;">
+						  <label id="latitude"></label>
+						  <label id="longitude"></label>
+						</div>
+						<script type="text/javascript" src="js/dragmap.js"></script>
+				</div>
+
+				  <div class="form-group">
+					<label for="exampleFormControlInput1">Referencia</label>
+					<input type="text" class="form-control" id="reference">
+				  </div>
+				  <div class="form-group">
+					<label for="exampleFormControlInput1">Código postal</label>
+					<input type="number" class="form-control" id="zip">
+				  </div>
+
+				  <h4>El lugar es...</h4>
+				  <p></p>
+				  <div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="place1">
+					<label class="form-check-label" for="inlineRadio1">Casa</label>
+				  </div>
+				  <div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="place2">
+					<label class="form-check-label" for="inlineRadio2">Oficina</label>
+				  </div>
+				  <div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="place3">
+					<label class="form-check-label" for="inlineRadio3">Otro</label>
+				  </div>
+			
+			  </form>
+
+
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		  <button type="button" class="btn btn-primary" onclick="saveNewAddress()">Guardar</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+	  <!--end modal-->
+
+
+	<!-- cart section end -->
+	<section class="cart-section spad" style="margin-top: -60px;margin-bottom: -60px;" id="secctionCart">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="cart-table">
+						<h3>Mi carrito</h3>
+						<div class="cart-table-warp">
+							<table>
+							<thead>
+								<tr>
+									<th class="product-th">Producto</th>
+									<th class="quy-th">Cantidad</th>
+								    <th class="total-th">Precio</th>
+								</tr>
+							</thead>
+							<tbody id="tdCart">
+
+							</tbody>
+						</table>
+						</div>
+						<div class="total-cost">
+							<h6>Subtotal<span id="subtotal"></span></h6>
+							<h6>Envío<span id="shipping"></span></h6>
+							<h6>Total<span id="totalcost"></span></h6>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 card-right">
+					<a href="#" class="site-btn" data-toggle="modal" data-target="#modalPay" style="color: aliceblue;">Pagar</a>
+					<a href="index.html" class="site-btn sb-dark">Continuar comprando</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div id="evaluate" style="text-align: center;"></div>
+	<script src="js/cart.js"></script>
+	<!-- cart section end -->
+
+
+	<!-- Footer section -->
+	<section class="footer-section">
+		<div class="container">
+			<div class="footer-logo text-center">
+				<a href="index.html"><img src="./img/aukdeshoplight.png" width="250px" alt=""></a>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget about-widget">
+						<h2>Nosotros</h2>
+						<p>Compra desde la comodidad de tu casa o en cualquier lugar donde te encuentres de manera fácil...
+							Descarga nuestra app y ten una experiencia más confortable.</p>
+						<img src="img/cards.png" alt="">
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget about-widget">
+						<h2>Preguntas</h2>
+						<ul>
+							<li><a href="">Pregunta 1</a></li>
+							<li><a href="">Pregunta 2</a></li>
+							<li><a href="">Pregunta 3</a></li>
+						</ul>
+						<ul>
+							<li><a href="">Pregunta 4</a></li>
+							<li><a href="">Pregunta 5</a></li>
+							<li><a href="">Pregunta 6</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget about-widget">
+						<h2>Otros servicios</h2>
+						<div class="fw-latest-post-widget">
+							<div class="lp-item">
+								<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/thumb1.jpg"></div>
+								<div class="lp-content">
+									<h6 style="color: antiquewhite;">Desarrollo de Apps</h6>
+									<span>Oct 21, 2021</span>
+									<a href="#" class="readmore">Leer más</a>
+								</div>
+							</div>
+							<div class="lp-item">
+								<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/thumb2.jpg"></div>
+								<div class="lp-content">
+									<h6  style="color: antiquewhite;">IoT</h6>
+									<span>Oct 21, 2021</span>
+									<a href="#" class="readmore">Leer más</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget contact-widget">
+						<h2>Ubícanos</h2>
+						<div class="con-info">
+							<span>C.</span>
+							<p>Aukde - life´s Innovation</p>
+						</div>
+						<div class="con-info">
+							<span>B.</span>
+							<p>Av. Gonsalez prada #771</p>
+						</div>
+						<div class="con-info">
+							<span>T.</span>
+							<p>+51 992 997 223</p>
+						</div>
+						<div class="con-info">
+							<span>E.</span>
+							<p>info@aukde.com</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="social-links-warp" style="text-align:center">
+			<div class="container">
+				<div class="social-links">
+					<a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
+					<a href="" class="google-plus"><i class="fa fa-google-plus"></i><span>email</span></a>
+					<a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
+					<a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+					<a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
+				
+				</div>
+
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> 
+<p class="text-white text-center mt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos los derechos reservados | Desarrollado por Aukde <i class="fa fa-heart-o" aria-hidden="true"></i></p>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+			</div>
+		</div>
+	</section>
+	<!-- Footer section end -->
+
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.slicknav.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.nicescroll.min.js"></script>
+	<script src="js/jquery.zoom.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/main.js"></script>
+    </div>
+	</body>
+</html>

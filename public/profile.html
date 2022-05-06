@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>AukdeShop</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+	<script src="js/getProducts.js"></script>
+	<script src="js/getData.js" defer="active"></script>
+
+	<script src="js/alertify.min.js"></script>
+	<link rel="stylesheet" href="css/alertify.css"/>
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/flaticon.css"/>
+	<link rel="stylesheet" href="css/slicknav.min.css"/>
+	<link rel="stylesheet" href="css/jquery-ui.min.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
+	<link rel="stylesheet" href="css/animate.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	
+
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body id="generalBody">
+	<div id="generalDiv">
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<div class="loading" id="loadAddToCart"></div>
+
+	<a href="cart.html" class="float">
+		<i class="fa fa-shopping-cart my-float mouse"></i>
+		<h6 style="color: aliceblue;margin-top: -1px;" id="ctxCart2">0</h6>
+		</a>
+
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="header-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 text-center text-lg-left">
+						<!-- logo -->
+						<a href="./index.html" class="site-logo">
+							<img src="img/aukdeshop.png">
+						</a>
+					</div>
+					<div class="col-xl-6 col-lg-5">
+						<form class="header-search-form">
+							<input type="text" placeholder="Buscar ....">
+							<button><i class="flaticon-search"></i></button>
+						</form>
+					</div>
+					<div class="col-xl-4 col-lg-5">
+						<div class="user-panel">
+
+							<div class="up-item" id="credentials">
+								<i class="flaticon-profile"></i>
+								<a href="#">Regístrate</a> ó <a href="#myModal" class="trigger-btn" data-toggle="modal">Inicia Sesión</a>
+							</div>
+
+							<div class="up-item" id="logged" style="display: none;">
+								<i class="flaticon-profile"></i>
+								<a href="profile.html">Mi perfil</a> | <a onclick="logout()" href="#">Salir</a>
+							</div>
+							&nbsp;
+							<div class="up-item">
+								<div class="shopping-card">
+									<i class="flaticon-bag"></i>
+									<span id="ctxCart1">0</span>
+								</div>
+								<a href="cart.html">Mi carrito</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal HTML -->
+ <div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">Iniciar sesión</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<i class="fa fa-user"></i>
+						<input type="email" class="form-control" placeholder="Correo" required="required" id="email">
+					</div>
+					<div class="form-group">
+						<i class="fa fa-lock"></i>
+						<input type="password" class="form-control" placeholder="Contraseña" required="required" id="password">					
+					</div>
+					<div class="form-group">
+						<input class="btn btn-primary btn-block btn-lg" value="Acceder" id="btn-login" onclick="login()">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#">Olvidaste tu contraseña?</a>
+			</div>
+		</div>
+	</div>
+</div>     
+<!-- Modal HTML -->
+
+		<nav class="main-navbar" id="main_navbar">
+			<div class="container">
+				<!-- menu -->
+				<ul class="main-menu">
+					<li><a href="index.html">Inicio</a></li>
+					<!-- 
+					<li><a href="#">Categorias</a>
+						<ul class="sub-menu">
+							<li><a href="./product.html">Comidas y bebidas</a></li>
+							<li><a href="./category.html">Electrónicos</a></li>
+							<li><a href="./cart.html">Calzado</a></li>
+							<li><a href="./checkout.html">Otro1</a></li>
+							<li><a href="./contact.html">Otro2</a></li>
+						</ul> -->
+					<li><a href="#">Descarga nuestra app</a>
+						
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<nav id="navClient"></nav>
+	
+		<script src="js/nav.js"></script>
+
+
+	</header>
+	<!-- Header section end -->
+
+	<div class="container rounded bg-white mt-5 mb-5">
+		<div class="row">
+			<div class="col-md-3 border-right">
+				<div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="img/defaultimgprofile.jpg" id="imageProfile"><span class="font-weight-bold">Usuario cliente</span><span class="text-black-50" id="mail">edogaru@mail.com.my</span><span> </span></div>
+			</div>
+			<div class="col-md-5 border-right">
+				<div class="p-3 py-5">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h4 class="text-right">Configuración de perfil</h4>
+					</div>
+					<div class="row mt-2">
+						<div class="col-md-6"><label class="labels">Nombres</label><input type="text" class="form-control" placeholder="nombres" id="name"></div>
+						<div class="col-md-6"><label class="labels">Apellidos</label><input type="text" class="form-control" value="" placeholder="apellidos" id="lastname"></div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-md-12"><label class="labels">Número telefónico</label><input type="text" class="form-control" maxlength="9" oninput="this.value=this.value.slice(0,this.maxLength)" placeholder="teléfono" value="" id="phone"></div>	
+					</div>
+		
+					<div class="mt-5 text-center"><button class="btn btn-primary profile-button" onclick="updateData()" id="btnUpdate" type="button">Guardar datos</button></div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="p-3 py-5">
+					<div class="d-flex justify-content-between align-items-center experience"><span>Género</span><span class="border px-3 p-1 add-experience" id="male" onclick="changeGenderMale()"><i class="fa fa-plus"></i>&nbsp;Masculino</span> <span class="border px-3 p-1 add-experience" id="female" onclick="changeGenderFemale()"><i class="fa fa-plus"></i>&nbsp;Femenino</span></div><br>
+					<div class="col-md-12"><label class="labels">DNI</label><input type="text" class="form-control" maxlength="8" oninput="this.value=this.value.slice(0,this.maxLength)" placeholder="dni" value="" id="dni"></div><br></br><br></br>
+					<div class="col-md-12"><label class="labels">Código de cliente</label><input type="text" class="form-control" placeholder="código" value="" id="codeClient"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Footer section -->
+	<section class="footer-section">
+		<div class="container">
+			<div class="footer-logo text-center">
+				<a href="index.html"><img src="./img/aukdeshoplight.png" width="250px" alt=""></a>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget about-widget">
+						<h2>Nosotros</h2>
+						<p>Compra desde la comodidad de tu casa o en cualquier lugar donde te encuentres de manera fácil...
+							Descarga nuestra app y ten una experiencia más confortable.</p>
+						<img src="img/cards.png" alt="">
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget about-widget">
+						<h2>Preguntas</h2>
+						<ul>
+							<li><a href="">Pregunta 1</a></li>
+							<li><a href="">Pregunta 2</a></li>
+							<li><a href="">Pregunta 3</a></li>
+						</ul>
+						<ul>
+							<li><a href="">Pregunta 4</a></li>
+							<li><a href="">Pregunta 5</a></li>
+							<li><a href="">Pregunta 6</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget about-widget">
+						<h2>Otros servicios</h2>
+						<div class="fw-latest-post-widget">
+							<div class="lp-item">
+								<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/thumb1.jpg"></div>
+								<div class="lp-content">
+									<h6 style="color: antiquewhite;">Desarrollo de Apps</h6>
+									<span>Oct 21, 2021</span>
+									<a href="#" class="readmore">Leer más</a>
+								</div>
+							</div>
+							<div class="lp-item">
+								<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/thumb2.jpg"></div>
+								<div class="lp-content">
+									<h6  style="color: antiquewhite;">IoT</h6>
+									<span>Oct 21, 2021</span>
+									<a href="#" class="readmore">Leer más</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="footer-widget contact-widget">
+						<h2>Ubícanos</h2>
+						<div class="con-info">
+							<span>C.</span>
+							<p>Aukde - life´s Innovation</p>
+						</div>
+						<div class="con-info">
+							<span>B.</span>
+							<p>Av. Gonsalez prada #771</p>
+						</div>
+						<div class="con-info">
+							<span>T.</span>
+							<p>+51 992 997 223</p>
+						</div>
+						<div class="con-info">
+							<span>E.</span>
+							<p>info@aukde.com</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="social-links-warp" style="text-align:center">
+			<div class="container">
+				<div class="social-links">
+					<a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
+					<a href="" class="google-plus"><i class="fa fa-google-plus"></i><span>email</span></a>
+					<a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
+					<a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+					<a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
+				
+				</div>
+
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> 
+<p class="text-white text-center mt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script> Todos los derechos reservados | Desarrollado por Aukde <i class="fa fa-heart-o" aria-hidden="true"></i></p>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+			</div>
+		</div>
+	</section>
+	<!-- Footer section end -->
+
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.slicknav.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.nicescroll.min.js"></script>
+	<script src="js/jquery.zoom.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/main.js"></script>
+    </div>
+	</body>
+</html>
